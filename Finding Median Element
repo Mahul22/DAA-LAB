@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+
+void swap(int arr[], int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+
+    swap(arr, i + 1, high);
+    return i + 1;
+}
+
+
+void findMedianNeighbors(int arr[], int low, int high, int medianIndex) {
+    if (low <= high) {
+        int pivotIndex = partition(arr, low, high);
+
+        if (pivotIndex == medianIndex) {
+            if (medianIndex > 0) {
+                printf("Left neighbor of the median: %d\n", arr[medianIndex - 1]);
+            }
+            printf("Median: %d\n", arr[pivotIndex]);
+            if (medianIndex < high) {
+                printf("Right neighbor of the median: %d\n", arr[medianIndex + 1]);
+            }
+            return;
+        }
+
+     
+        if (pivotIndex < medianIndex) {
+            findMedianNeighbors(arr, pivotIndex + 1, high, medianIndex);
+        } else {
+            findMedianNeighbors(arr, low, pivotIndex - 1, medianIndex);
+        }
+    }
+}
+
+int main() {
+    int arr[] = {7, 2, 9, 4, 1, 8, 3, 6, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    int medianIndex = n / 2; 
+
+    findMedianNeighbors(arr, 0, n - 1, medianIndex);
+
+    return 0;
+}
