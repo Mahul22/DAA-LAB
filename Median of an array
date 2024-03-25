@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int compareIntegers(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+
+double findMedian(int arr[], int n) {
+   
+    qsort(arr, n, sizeof(int), compareIntegers);
+
+   
+    if (n % 2 != 0) {
+        return arr[n / 2];
+    }
+    
+    else {
+        int middle1 = arr[n / 2 - 1];
+        int middle2 = arr[n / 2];
+        return (double)(middle1 + middle2) / 2.0;
+    }
+}
+
+int main() {
+    int arr[] = {12, 56, 7, 89, 45, 23, 67};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    double median = findMedian(arr, n);
+
+    printf("Median: %.2f\n", median);
+
+    return 0;
+}
