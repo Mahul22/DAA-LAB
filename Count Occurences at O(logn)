@@ -1,0 +1,68 @@
+#include <stdio.h>
+
+
+int Occurrence(int arr[], int n, int x) {
+    int low = 0, high = n - 1, result = -1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == x) {
+            result = mid;
+            high = mid - 1; // Continue searching in the left subarray
+        } else if (arr[mid] > x) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return result;
+}
+
+
+int Occurrenceagain(int arr[], int n, int x) {
+    int low = 0, high = n - 1, result = -1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == x) {
+            result = mid;
+            low = mid + 1;
+        } else if (arr[mid] > x) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return result;
+}
+
+
+int count(int arr[], int n, int x) {
+    int Occurrence = Occurrenceagain(arr, n, x);
+    
+    
+    if (Occurrence == -1) {
+        return 0;
+    }
+
+    int last = Occurrenceagain(arr, n, x);
+
+    
+    return last - Occurrence + 1;
+}
+
+int main() {
+    int arr[] = {1, 2, 2, 2, 3, 4, 4, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int x = 2;
+
+    int occurrences = count(arr, n, x);
+
+    printf("Number of occurrences of %d: %d\n", x, occurrences);
+
+    return 0;
+}
