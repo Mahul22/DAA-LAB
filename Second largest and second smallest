@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+
+void findSecondMinMax(int arr[], int low, int high, int *secondMin, int *secondMax) {
+    if (low == high) {
+   
+        *secMin = *secMax = arr[low];
+        return;
+    }
+
+    if (high - low == 1) {
+       
+        if (arr[low] < arr[high]) {
+            *secMin = arr[low];
+            *secMax = arr[high];
+        } else {
+            *secMin = arr[high];
+            *secMax = arr[low];
+        }
+        return;
+    }
+
+
+    int mid = (low + high) / 2;
+    int leftMin, leftMax, rightMin, rightMax;
+
+    findSecondMinMax(arr, low, mid, &leftMin, &leftMax);
+    findSecondMinMax(arr, mid + 1, high, &rightMin, &rightMax);
+
+   
+    if (leftMin < rightMin) {
+        *secMin = leftMin;
+    } else {
+        *secMin = rightMin;
+    }
+
+    if (leftMax > rightMax) {
+        *secMax = leftMax;
+    } else {
+        *secMax = rightMax;
+    }
+}
+
+int main() {
+    int arr[] = {12, 34, 1, 56, 42, 78, 90, 45};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int secMin, secMax;
+
+    findSecondMinMax(arr, 0, n - 1, &secMin, &secMax);
+
+    printf("Second Smallest: %d\n", secMin);
+    printf("Second Largest: %d\n", secMax);
+
+    return 0;
+}
