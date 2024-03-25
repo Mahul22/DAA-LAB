@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <limits.h>
+
+void matrixChainOrder(int p[], int n) {
+    int m[n][n];
+    int s[n][n]; 
+
+  
+    for (int i = 1; i < n; i++) {
+        m[i][i] = 0; // Chain of length 1 has no cost
+    }
+
+ 
+    for (int len = 2; len < n; len++) {
+        for (int i = 1; i < n - len + 1; i++) {
+            int j = i + len - 1;
+            m[i][j] = INT_MAX;
+
+            for (int k = i; k < j; k++) {
+                int cost = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+
+                if (cost < m[i][j]) {
+                    m[i][j] = cost;
+                    s[i][j] = k;
+                }
+            }
+        }
+    }
+
+    
+    printf("Optimal Parenthesizing Expression: ");
+    printParenthesis(s, 1, n - 1);
+    printf("\n");
+
+    
+    printf("Minimum number of scalar multiplications: %d\n", m[1][n - 1]);
+}
+
+
+void printParenthesis(int s[][100], int i, int j) {
+    if (i == j) {
+        printf("A%d", i);
+    } else {
+        printf("(");
+        printParenthesis(s, i, s[i][j]);
+        printParenthesis(s, s[i][j] + 1, j);
+        printf(")");
+    }
+}
+
+int main() {
+    int dimensions[] = {30, 35, 15, 5, 10, 20, 25};
+    int n = sizeof(dimensions) / sizeof(dimensions[0]);
+
+    matrixChainOrder(dimensions, n);
+
+    return 0;
+}
